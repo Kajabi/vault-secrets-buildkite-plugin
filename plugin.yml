@@ -35,9 +35,11 @@ configuration:
           type: string
         jwt-role:
           type: string
+        kubernetes-role:
+          type: string
     secrets:
       type: array
   additionalProperties: false
   required: [ auth ]
-    
+
 

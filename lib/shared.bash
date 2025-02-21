@@ -106,6 +106,20 @@ vault_auth() {
 
         return "${PIPESTATUS[0]}"
     ;;
+
+    kubernetes)
+        echo "--- performing Kubernetes authentication"
+        if ! VAULT_TOKEN=$(vault write -field=token auth/kubernetes/login role="${BUILDKITE_PLUGIN_VAULT_SECRETS_AUTH_KUBERNETES_ROLE:-"buildkite"}" jwt="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"); then
+          echo "+++🚨 Failed to get vault token"
+          exit 1
+        fi
+
+        export VAULT_TOKEN
+
+        echo "Successfully authenticated with JWT"
+
+        return "${PIPESTATUS[0]}"
+    ;;
   esac
 }
 
