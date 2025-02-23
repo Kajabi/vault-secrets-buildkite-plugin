@@ -109,6 +109,9 @@ vault_auth() {
 
     kubernetes)
         echo "--- performing Kubernetes authentication"
+        echo "BUILDKITE_PLUGIN_VAULT_SECRETS_AUTH_KUBERNETES_ROLE: ${BUILDKITE_PLUGIN_VAULT_SECRETS_AUTH_KUBERNETES_ROLE:-}"
+        echo "PATH: ${PATH:-}"
+
         if ! VAULT_TOKEN=$(vault write -field=token auth/kubernetes/login role="${BUILDKITE_PLUGIN_VAULT_SECRETS_AUTH_KUBERNETES_ROLE:-"buildkite"}" jwt="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"); then
           echo "+++🚨 Failed to get vault token"
           exit 1
